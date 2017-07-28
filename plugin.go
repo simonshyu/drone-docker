@@ -126,7 +126,9 @@ func (p Plugin) Exec() error {
 	}
 
 	cmds = append(cmds, commandRmi(p.Build.Name)) // docker rmi
-	cmds = append(cmds, commandPrune())           // docker system prune -f
+	if !p.Daemon.Disabled {
+		cmds = append(cmds, commandPrune()) // docker system prune -f
+	}
 
 	// execute all commands in batch mode.
 	for _, cmd := range cmds {
